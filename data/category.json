@@ -1,0 +1,14 @@
+[
+    {
+      "category_id": "01",
+      "category_name": "Apple Laptop"
+    },
+    {
+        "category_id": "02",
+      "category_name": "Sumsung Laptop"
+    },
+    {
+        "category_id": "03",
+      "category_name": "Dell Laptop"
+    }
+]
