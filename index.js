@@ -27,6 +27,12 @@ async function run() {
         const result=await categoryCollection.find(query).toArray();
         res.send(result);
      });
+     app.post('/products', async (req, res) => {
+      const product = req.body;
+      console.log(product);
+      const result = await laptopProductsCollection.insertOne(product);
+      res.send(result);
+  });
      app.post('/users', async (req, res) => {
       const user = req.body;
       console.log(user);
@@ -56,6 +62,17 @@ app.get('/users/seller/:email', async (req, res) => {
         const result=await laptopProductsCollection.find(query).toArray();
         res.send(result);
      })
+    //  app.get('/addType', async (req, res) => {
+    //       const filter = {}
+    //       const options = { upsert: true }
+    //       const updatedDoc = {
+    //           $set: {
+    //               condition: "Good"
+    //           }
+    //       }
+    //       const result = await laptopProductsCollection.updateMany(filter, updatedDoc, options);
+    //       res.send(result);
+    //   })
     } finally {
       
     }
