@@ -28,6 +28,16 @@ async function run() {
         const result=await categoryCollection.find(query).toArray();
         res.send(result);
      });
+     const verifyAdmin = async (req, res, next) => {
+      const email = req.email;
+      const query = { email: email };
+      const user = await usersCollection.findOne(query);
+
+      if (user?.role !== 'admin') {
+          return res.status(403).send({ message: 'forbidden access' })
+      }
+      next();
+  }
      app.post('/products', async (req, res) => {
       const product = req.body;
       console.log(product);
@@ -40,12 +50,31 @@ async function run() {
       const result = await usersCollection.insertOne(user);
       res.send(result);
   });
+  app.get('/users/admin/allsellers', async (req, res) => {
+    //const email = req.params.email;
+    const query = {optionRole : 'seller'}
+    const user = await usersCollection.find(query).toArray();
+    res.send(user);
+  });
+  app.get('/users/admin/allbuyers', async (req, res) => {
+    //const email = req.params.email;
+    const query = {optionRole : 'buyer'}
+    const user = await usersCollection.find(query).toArray();
+    res.send(user);
+  });
   app.post('/bookedProduct', async (req, res) => {
     const booked = req.body;
     console.log(booked);
     const result = await bookingCollection.insertOne(booked);
     res.send(result);
 });
+app.get('/users/seller/:email', async (req, res) => {
+  const email = req.params.email;
+  const query = { email }
+  const user = await usersCollection.findOne(query);
+  res.send({ isSeller: user?.optionRole === 'seller' });
+});
+
   app.get('/users', async (req, res) => {
     const query ={};
     const result = await usersCollection.find(query).toArray();
@@ -57,11 +86,11 @@ app.get('/users/admin/:email', async (req, res) => {
   const user = await usersCollection.findOne(query);
   res.send({ isAdmin: user?.optionRole === 'admin' });
 });
-app.get('/users/seller/:email', async (req, res) => {
+app.get('/users/buyer/:email', async (req, res) => {
   const email = req.params.email;
   const query = { email }
   const user = await usersCollection.findOne(query);
-  res.send({ isSeller: user?.optionRole === 'seller' });
+  res.send({ isBuyer: user?.optionRole === 'buyer' });
 });
      app.get('/category/:id',async(req,res)=>{
         const id = req.params.id;
