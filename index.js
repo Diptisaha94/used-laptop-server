@@ -155,7 +155,7 @@ app.put('/myproducts/:email', async (req, res) => {
           status: 'verify'
       }
   }
-  const result = await laptopProductsCollection.updateOne(filter, updatedDoc, options);
+  const result = await laptopProductsCollection.updateMany(filter, updatedDoc, options);
   res.send(result);
 });
 app.get('/users/sellerverify',async(req,res)=>{
